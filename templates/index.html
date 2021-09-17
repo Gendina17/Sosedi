@@ -1,0 +1,26 @@
+{{ define "index"}}
+{{ template "header"}}
+<main class="px-3">
+  <h1 class="title">Найди лучшего соседа</h1>
+  <div class="cards">
+    {{ template "user_card"}}
+    {{ template "user_card"}}
+    {{ template "user_card"}}
+  </div>
+  <br>
+  <br>
+  <br>
+  <div class="cards">
+    {{ template "user_card"}}
+    {{ template "user_card"}}
+    {{ template "user_card"}}
+  </div>
+  <br>
+  <br>
+  <br>
+  <!-- <p class="lead">
+    <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Еще..</a>
+  </p> -->
+</main>
+{{ template "footer"}}
+{{ end }}
