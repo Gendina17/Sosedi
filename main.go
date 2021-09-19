@@ -2,15 +2,22 @@ package main
 
 import (
   "net/http"
+  "github.com/gorilla/mux"
 )
 
 func handleFunc() {
+  router := mux.NewRouter()
+
+  router.HandleFunc("/", index).Methods("GET")
+  router.HandleFunc("/profile/{id:[0-9]+}", profile).Methods("GET")
+  router.HandleFunc("/registration", registration).Methods("GET")
+  router.HandleFunc("/authorization", authorization).Methods("GET")
+  router.HandleFunc("/create_user", authorization).Methods("POST")
+  router.HandleFunc("/contacts", contacts).Methods("GET")
+
   http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-  http.HandleFunc("/", index)
-  http.HandleFunc("/profile/", profile)
-  http.HandleFunc("/registration/", registration)
-  http.HandleFunc("/authorization/", authorization)
-  http.HandleFunc("/contacts/", contacts)
+  http.Handle("/", router)
+
   http.ListenAndServe(":8080", nil)
 }
 
