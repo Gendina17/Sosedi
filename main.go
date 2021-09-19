@@ -10,10 +10,10 @@ func handleFunc() {
 
   router.HandleFunc("/", index).Methods("GET")
   router.HandleFunc("/profile/{id:[0-9]+}", profile).Methods("GET")
-  router.HandleFunc("/registration", registration).Methods("GET")
-  router.HandleFunc("/authorization", authorization).Methods("GET")
-  router.HandleFunc("/create_user", authorization).Methods("POST")
-  router.HandleFunc("/contacts", contacts).Methods("GET")
+  router.HandleFunc("/registration/", registration).Methods("GET")
+  router.HandleFunc("/authorization/", authorization).Methods("GET")
+  router.HandleFunc("/create_user/", authorization).Methods("POST")
+  router.HandleFunc("/contacts/", contacts).Methods("GET")
 
   http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
   http.Handle("/", router)
