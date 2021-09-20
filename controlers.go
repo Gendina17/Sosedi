@@ -49,6 +49,28 @@ func authorization(w http.ResponseWriter, r *http.Request) {
   t.ExecuteTemplate(w, "profile", nil)
 }
 
+func log_in(w http.ResponseWriter, r *http.Request) {
+  email := r.FormValue("email")
+  password := r.FormValue("password")
+
+  if user_verification(email, password) {
+//сессию создаем
+  } else {
+    error := "Такого пользователя не существует проверьте свой логин и пароль"
+  }
+
+}
+
+func log_up(w http.ResponseWriter, r *http.Request) {
+  email := r.FormValue("email")
+  password := r.FormValue("password")
+
+  // create_user()
+
+  //вынести вход в отдельный метод и вызывать тут после создания тоже
+
+}
+
 func contacts(w http.ResponseWriter, r *http.Request) {
   t, err := template.ParseFiles("templates/contacts.html", "templates/header.html", "templates/footer.html")
 
