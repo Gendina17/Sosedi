@@ -15,6 +15,7 @@ type User struct {
   Age uint16
   PriceMin, PriceMax uint32
   Password, Sault, Email string
+  Sex string
 }
 
 func get_users() []User {
@@ -61,22 +62,27 @@ func user_verification(email string, password string) bool  {
       res.Scan(&user.Id, &user.Name, &user.Password, &user.Sault)
     }
 
-    if user != nil && bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password + user.Sault)) == 0 {
-        return true
-    }
+    // if user != nil && bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password + user.Sault)) == 0 {
+    //     return true
+    // }
     return false
 }
 //подумать как передавать кучу параметров мб хэш
-func create_user(name string, urname string, birthday string, price_min string, price_max string, password string, sault string, email string)  {
-  sault = uniuri.NewLen(10)
+func create_user(email string, password string, name string, surname string, sex string, birthday string)  {
+  sault := uniuri.NewLen(10)
   encrypted_password, _ := bcrypt.GenerateFromPassword([]byte(password + sault), 5)
 
   db, _ := sql.Open("mysql", "root:root@tcp(127.0.0.1:8889)/sosedi")
   defer db.Close()
 
-  res, _ := db.Query(fmt.Sprintf(
-    `INSERT INTO users (name, surname, birthday, price_min, price_max, password, sault, email)
-     VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')`,
-     name, urname, birthday, price_min, price_max, encrypted_password, sault, email))
+  res, _ := db.Query(fmt.Sprintf("INSERT INTO users (name, surname, birthday, price_min, price_max, password, sault, email, sex) VALUES ('%s','%s','%s','34000','23000','%s','%s','%s', '%s')", name, surname, birthday, encrypted_password, sault, email, sex))
+  defer res.Close()
 }
+
+func data_validation(email string, password string, repeat_password string, name string, surname string, sex string, birthday string) string {
+  return "ok"
+}
+
 //мб вынесни в отдельный метод обращение к базе ток вот какого типа возвращаемое значение узнать
+
+// мб в го можн как т по норм возвращать чтоб не ок посмотреть

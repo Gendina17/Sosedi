@@ -1,13 +1,18 @@
-{{ define "profile"}}
+{{ define "registration"}}
 {{ template "header_log"}}
+<div id="errors">
+  {{ . }}
+</div>
 <div class="login-box ">
   <h2>SOSEDI</h2>
+  <form id="myform" action="/log_up" method="post">
   <div id="form1">
     {{ template "form1.html"}}
   </div>
   <div id="form2" class="form2_class">
     {{ template "form2.html"}}
   </div>
+  </form>
 </div>
 <style media="screen">
   html {
@@ -22,11 +27,125 @@
 }
 </style>
 <script type="text/javascript">
+  // мб вынести в общий файл для скриптов потом и подключать в хэдэре
   function change_forms() {
+    var pattern = /^[a-z0-9][a-z0-9\._-]*[a-z0-9]*@([a-z0-9]+([a-z0-9-]*[a-z0-9]+)*\.)+[a-z]+/i;
+    var mail = $('input[name=mail]');
+        if(mail.val() != ''){
+          if(mail.val().length < 50){
+            // Проверяем, если введенный email соответствует регулярному выражению
+            if(mail.val().search(pattern) == 0){
+                // Убираем сообщение об ошибке
+                $('#errors').text('');
+            }else{
+                //Выводим сообщение об ошибке
+                $('#errors').text('Введите корректный Email, пожалуйста');
+                return
+            }
+          } else {
+            $('#errors').text('Введенный email слишком длинный');
+            return
+          }
+        }else{
+            $('#errors').text('Введите Ваш email, пожалуйста');
+            return
+        }
+    //================ Проверка длины пароля ==================
+    var password = $('input[name=password]');
+        if(password.val() != ''){
+            //Если длина введенного пароля меньше шести символов, то выводим сообщение об ошибке
+            if(password.val().length < 6){
+                //Выводим сообщение об ошибке
+                $('#errors').text('Пароль не может быть короче 6 символов');
+                return
+            }else{
+                if(password.val().length < 40) {
+                  // Убираем сообщение об ошибке
+                  $('#errors').text('');
+                } else {
+                  $('#errors').text('Введенный пароль слишком длинный');
+                }
+            }
+        }else{
+            $('#errors').text('Введите свой пароль, пожалуйста');
+            return
+        }
+//================ Проверка повтора пароля ==================
+        var repeat_password = $('input[name=repeat_password]');
+            if(password.val() != repeat_password.val()){
+                $('#errors').text('Введенные пароли не совпадают');
+                return
+            }
+//================ Проверка имени ==================
+            var name = $('input[name=name]');
+                if(name.val() != ''){
+                    //Если длина введенного пароля меньше шести символов, то выводим сообщение об ошибке
+                    if(name.val().length > 40){
+                        //Выводим сообщение об ошибке
+                        $('#errors').text('Введенное имя слишком длинное');
+                        return
+                    }else{
+                        // Убираем сообщение об ошибке
+                        $('#errors').text('');
+                    }
+                }else{
+                    $('#errors').text('Введите свое имя, пожалуйста');
+                    return
+                }
+
+                //================ Проверка фамилии ==================
+
+                var surname = $('input[name=surname]');
+                    if(surname.val() != ''){
+                        //Если длина введенного пароля меньше шести символов, то выводим сообщение об ошибке
+                        if(surname.val().length > 40){
+                            //Выводим сообщение об ошибке
+                            $('#errors').text('Введенная фамилия слишком длинная');
+                            return
+                        }else{
+                            // Убираем сообщение об ошибке
+                            $('#errors').text('');
+                        }
+                    }else{
+                        $('#errors').text('Введите свою фамилию, пожалуйста');
+                        return
+                    }
     document.getElementById('form1').style.display = 'none';
     document.getElementById('form2').classList.remove("form2_class");
   }
+
+  function send_form() {
+    //================ Проверка даты рождения ==================
+    var birthday = $('input[name=birthday]');
+    if(birthday.val() == '' || new Date(birthday.val()) > new Date("2005-01-01") || new Date(birthday.val()) < new Date("1940-01-01")){
+      $('#errors').text('Введите корректную дату, пожалуйста');
+      return
+    } else {
+      // Убираем сообщение об ошибке
+      $('#errors').text('');
+    }
+
+    //================ Проверка пола ==================
+    var sex = $('input[name=sex]');
+
+    if(sex.val() == 'm' || sex.val() == 'w' || sex.val() == 'w'){
+      // Убираем сообщение об ошибке
+      $('#errors').text('');
+    } else {
+      $('#errors').text('Ваш пол указан неккоректно');
+      return
+    }
+    document.getElementById('myform').submit(); return false;
+  }
 </script>
+<style media="screen">
+  #errors {
+    color: white;
+    background: #732124;
+    text-align: center;
+    font-size: 1.3em;
+  }
+</style>
 </body>
 </html>
 {{ end }}

@@ -8,7 +8,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 )
-
+// сделать чтоб без авторизации можно заходить только на index и притом в хэдере другие кнопки и еще чтоб с регистрации на авторизацию ссылка и наоборот
 func index(w http.ResponseWriter, r *http.Request) {
   t, _ := template.ParseFiles("templates/index.html", "templates/header.html",
     "templates/footer.html", "templates/user_card.html")
@@ -36,7 +36,7 @@ func registration(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, err.Error())
   }
 
-  t.ExecuteTemplate(w, "profile", nil)
+  t.ExecuteTemplate(w, "registration", nil)
 }
 
 func authorization(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +46,7 @@ func authorization(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, err.Error())
   }
 
-  t.ExecuteTemplate(w, "profile", nil)
+  t.ExecuteTemplate(w, "authorization", nil)
 }
 
 func log_in(w http.ResponseWriter, r *http.Request) {
@@ -56,19 +56,31 @@ func log_in(w http.ResponseWriter, r *http.Request) {
   if user_verification(email, password) {
 //сессию создаем
   } else {
-    error := "Такого пользователя не существует проверьте свой логин и пароль"
+    // error := "Такого пользователя не существует проверьте свой логин и пароль"
   }
 
 }
 
 func log_up(w http.ResponseWriter, r *http.Request) {
-  email := r.FormValue("email")
+  email := r.FormValue("mail")
   password := r.FormValue("password")
+  name := r.FormValue("name")
+  surname := r.FormValue("surname")
+  repeat_password := r.FormValue("repeat_password")
+  sex := r.FormValue("sex")
+  birthday := r.FormValue("birthday")
 
-  // create_user()
+  error := data_validation(email, password, repeat_password, name, surname, sex, birthday)
 
-  //вынести вход в отдельный метод и вызывать тут после создания тоже
-
+  if error == "ok" {
+    // почемууууууууууу меил не добавляется я не понимаююююю
+    create_user(email, password, name, surname, sex, birthday)
+    //вынести вход в отдельный метод и вызывать тут после создания тоже
+    http.Redirect(w, r, "/", 301)
+  } else {
+    t, _ := template.ParseFiles("templates/registration.html", "templates/header_log.html", "templates/form1.html", "templates/form2.html", "templates/form3.html" )
+    t.ExecuteTemplate(w, "registration", error)
+  }
 }
 
 func contacts(w http.ResponseWriter, r *http.Request) {
