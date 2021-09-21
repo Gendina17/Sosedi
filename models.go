@@ -2,6 +2,7 @@ package main
 
 import (
   "fmt"
+  "regexp"
   "golang.org/x/crypto/bcrypt"
   "github.com/dchest/uniuri"
   "database/sql"
@@ -21,7 +22,7 @@ type User struct {
 func get_users() []User {
   users := []User{}
 
-  db, _ := sql.Open("mysql", "root:root@tcp(127.0.0.1:8889)/sosedi")
+  db := connect_db()
   defer db.Close()
 
   res, _ := db.Query("SELECT id, name, price_min, price_max FROM users ")
@@ -36,7 +37,7 @@ func get_users() []User {
 }
 
 func get_user(id string) User {
-  db, _ := sql.Open("mysql", "root:root@tcp(127.0.0.1:8889)/sosedi")
+  db := connect_db()
   defer db.Close()
 
   res, _ := db.Query(fmt.Sprintf(
@@ -51,7 +52,7 @@ func get_user(id string) User {
 }
 
 func user_verification(email string, password string) bool  {
-  db, _ := sql.Open("mysql", "root:root@tcp(127.0.0.1:8889)/sosedi")
+  db := connect_db()
   defer db.Close()
 
   res, _ := db.Query(fmt.Sprintf(
@@ -67,22 +68,60 @@ func user_verification(email string, password string) bool  {
     // }
     return false
 }
-//подумать как передавать кучу параметров мб хэш
+
 func create_user(email string, password string, name string, surname string, sex string, birthday string)  {
   sault := uniuri.NewLen(10)
   encrypted_password, _ := bcrypt.GenerateFromPassword([]byte(password + sault), 5)
 
-  db, _ := sql.Open("mysql", "root:root@tcp(127.0.0.1:8889)/sosedi")
+  db := connect_db()
   defer db.Close()
-
+email = "dfeef"
   res, _ := db.Query(fmt.Sprintf("INSERT INTO users (name, surname, birthday, price_min, price_max, password, sault, email, sex) VALUES ('%s','%s','%s','34000','23000','%s','%s','%s', '%s')", name, surname, birthday, encrypted_password, sault, email, sex))
   defer res.Close()
 }
 
-func data_validation(email string, password string, repeat_password string, name string, surname string, sex string, birthday string) string {
+func data_validation(email string, password string, repeat_password string, name string, surname string, sex string, birthday string, key string) string {
+  matched, _ := regexp.MatchString(`^[a-z0-9][a-z0-9\._-]*[a-z0-9]*@([a-z0-9]+([a-z0-9-]*[a-z0-9]+)*\.)+[a-z]+`, email)
+
+  if len(email) < 5 || len(email) > 40 || !matched {
+    return "Емаил введен некорректно"
+  }
+
+  if email_exist(email) {
+    return "Аккаунт с введенным email уже существует"
+  }
+
+  if password != repeat_password {
+    return "Пароли не совпадают"
+  }
+
+  if len(password) < 6 || len(password) > 40 {
+    return "Пароль введен неккоректно"
+  }
+
   return "ok"
 }
 
-//мб вынесни в отдельный метод обращение к базе ток вот какого типа возвращаемое значение узнать
+func email_exist(email string) bool {
+  db := connect_db()
+  defer db.Close()
 
-// мб в го можн как т по норм возвращать чтоб не ок посмотреть
+  // res, _ := db.Query(fmt.Sprintf("SELECT name FROM users LIMIT %s ", 1))
+  //
+  //   var user User
+  //   for res.Next() {
+  //     res.Scan(&user.Name)
+  //   }
+
+  return false
+}
+
+func connect_db() *sql.DB {
+  db, _ := sql.Open("mysql", "root:root@tcp(127.0.0.1:8889)/sosedi")
+  return db
+}
+// TODO: проверить возможность норм возврата из ыункции чтоб не ок
+// TODO: передавать невидимым инпутом токен посмотреть как его можн шифровать
+// TODO: найти как сделать норм проверку на существование в бд
+// TODO: подумать мб как т лучше передавать эту кучу параметров
+// TODO: сделать механизм входа и создание сессии, и чтоб доступ без входа только на индекс

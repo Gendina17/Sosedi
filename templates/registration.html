@@ -14,6 +14,9 @@
   </div>
   </form>
 </div>
+<div id="exist">
+  Уже есть аккаунт? <a href="/authorization/">Войдите!</a>
+</div>
 <style media="screen">
   html {
     height: 100%;
@@ -25,6 +28,17 @@
     font-family: sans-serif;
     background: linear-gradient(rgb(34,37, 41), #003457);
 }
+  #exist {
+    position: absolute;
+    top: 85%;
+    left: 44%;
+    color: rgba(0,0,0,.5);
+  }
+  #exist > a {
+    text-decoration: none;
+    color: #005f9e;
+  }
+
 </style>
 <script type="text/javascript">
   // мб вынести в общий файл для скриптов потом и подключать в хэдэре

@@ -8,7 +8,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 )
-// сделать чтоб без авторизации можно заходить только на index и притом в хэдере другие кнопки и еще чтоб с регистрации на авторизацию ссылка и наоборот
+
 func index(w http.ResponseWriter, r *http.Request) {
   t, _ := template.ParseFiles("templates/index.html", "templates/header.html",
     "templates/footer.html", "templates/user_card.html")
@@ -69,8 +69,9 @@ func log_up(w http.ResponseWriter, r *http.Request) {
   repeat_password := r.FormValue("repeat_password")
   sex := r.FormValue("sex")
   birthday := r.FormValue("birthday")
+  key := r.FormValue("key")
 
-  error := data_validation(email, password, repeat_password, name, surname, sex, birthday)
+  error := data_validation(email, password, repeat_password, name, surname, sex, birthday, key)
 
   if error == "ok" {
     // почемууууууууууу меил не добавляется я не понимаююююю
