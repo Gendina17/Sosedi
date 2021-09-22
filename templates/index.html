@@ -2,11 +2,22 @@
 {{ template "header"}}
 <main class="px-3">
   <h1 class="title">Найди лучшего соседа</h1>
-  <div class="cards">
+
+    {{ $i := 1 }}
+      <div class="cards">
     {{ range $user := . }}
+
     {{ template "user_card" $user }}
+{{ $i = $i}}
+    {{ if eq $i 3 }}
+    <br><br><br><br><br>
+    </div>
+    <div class="cards">
+    {{ $i = 0 }}
     {{ end }}
-  </div>
+
+    {{ end }}
+
 </main>
 {{ template "footer"}}
 {{ end }}

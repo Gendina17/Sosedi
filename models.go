@@ -51,22 +51,26 @@ func get_user(id string) User {
   return user
 }
 
-func user_verification(email string, password string) bool  {
+func user_verification(email string, password string) bool {
   db := connect_db()
   defer db.Close()
 
-  res, _ := db.Query(fmt.Sprintf(
-    "SELECT id, email, password, sault FROM users WHERE email = %s ", email))
-
-    var user User
-    for res.Next() {
-      res.Scan(&user.Id, &user.Name, &user.Password, &user.Sault)
-    }
-
-    // if user != nil && bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password + user.Sault)) == 0 {
-    //     return true
-    // }
+  if !email_exist(email) {
     return false
+  }
+
+   res, _ := db.Query(fmt.Sprintf("SELECT password, sault FROM users WHERE email = \"%s\" ", email))
+
+   var user User
+   for res.Next() {
+     res.Scan(&user.Password, &user.Sault)
+   }
+
+  if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password + user.Sault)) != nil {
+    return false
+  }
+
+  return true
 }
 
 func create_user(email string, password string, name string, surname string, sex string, birthday string)  {
@@ -75,7 +79,9 @@ func create_user(email string, password string, name string, surname string, sex
 
   db := connect_db()
   defer db.Close()
-email = "dfeef"
+
+// email = "rr@mail.ru"
+
   res, _ := db.Query(fmt.Sprintf("INSERT INTO users (name, surname, birthday, price_min, price_max, password, sault, email, sex) VALUES ('%s','%s','%s','34000','23000','%s','%s','%s', '%s')", name, surname, birthday, encrypted_password, sault, email, sex))
   defer res.Close()
 }
@@ -106,13 +112,13 @@ func email_exist(email string) bool {
   db := connect_db()
   defer db.Close()
 
-  // res, _ := db.Query(fmt.Sprintf("SELECT name FROM users LIMIT %s ", 1))
-  //
-  //   var user User
-  //   for res.Next() {
-  //     res.Scan(&user.Name)
-  //   }
+  var key int
 
+  db.QueryRow(fmt.Sprintf("SELECT EXISTS(SELECT id FROM users WHERE email = \"%s\" )", email)).Scan(&key)
+
+  if key == 1 {
+    return true
+  }
   return false
 }
 
@@ -120,8 +126,8 @@ func connect_db() *sql.DB {
   db, _ := sql.Open("mysql", "root:root@tcp(127.0.0.1:8889)/sosedi")
   return db
 }
-// TODO: проверить возможность норм возврата из ыункции чтоб не ок
+
 // TODO: передавать невидимым инпутом токен посмотреть как его можн шифровать
-// TODO: найти как сделать норм проверку на существование в бд
 // TODO: подумать мб как т лучше передавать эту кучу параметров
 // TODO: сделать механизм входа и создание сессии, и чтоб доступ без входа только на индекс
+// TODO: мб др писать

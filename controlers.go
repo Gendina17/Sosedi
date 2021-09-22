@@ -8,7 +8,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 )
-
+// как в этом го работают сессии ааааааааааааа
 func index(w http.ResponseWriter, r *http.Request) {
   t, _ := template.ParseFiles("templates/index.html", "templates/header.html",
     "templates/footer.html", "templates/user_card.html")
@@ -55,8 +55,11 @@ func log_in(w http.ResponseWriter, r *http.Request) {
 
   if user_verification(email, password) {
 //сессию создаем
+http.Redirect(w, r, "/", 301)
   } else {
-    // error := "Такого пользователя не существует проверьте свой логин и пароль"
+    error := "Такого пользователя не существует проверьте свой логин и пароль"
+    t, _ := template.ParseFiles("templates/authorization.html", "templates/header_log.html")
+    t.ExecuteTemplate(w, "authorization", error)
   }
 
 }
