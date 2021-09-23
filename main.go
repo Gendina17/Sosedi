@@ -5,8 +5,12 @@ import (
   "github.com/gorilla/mux"
 )
 
+var inMemorySession *Session
+
 func handleFunc() {
   router := mux.NewRouter()
+
+  inMemorySession = NewSession()
 
   router.HandleFunc("/", index).Methods("GET")
   router.HandleFunc("/profile/{id:[0-9]+}", profile).Methods("GET")

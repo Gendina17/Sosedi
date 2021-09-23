@@ -1,23 +1,17 @@
 {{ define "index"}}
-{{ template "header"}}
+{{ template "header" .Session}}
 <main class="px-3">
   <h1 class="title">Найди лучшего соседа</h1>
-
-    {{ $i := 1 }}
-      <div class="cards">
-    {{ range $user := . }}
-
-    {{ template "user_card" $user }}
-{{ $i = $i}}
-    {{ if eq $i 3 }}
-    <br><br><br><br><br>
-    </div>
-    <div class="cards">
-    {{ $i = 0 }}
+  <div class="cards">
+    {{ range $i, $user := .Users }}
+      {{ template "user_card" $user }}
+      {{ if eq $i 2 }}
+        </div>
+        <br><br><br><br><br>
+        <div class="cards">
+        {{ $i = 0 }}
+      {{ end }}
     {{ end }}
-
-    {{ end }}
-
 </main>
 {{ template "footer"}}
 {{ end }}
