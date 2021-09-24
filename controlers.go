@@ -113,6 +113,12 @@ func contacts(w http.ResponseWriter, r *http.Request) {
   t.ExecuteTemplate(w, "profile", nil)
 }
 
+func chat(w http.ResponseWriter, r *http.Request) {
+  t, _ := template.ParseFiles("templates/chat.html")
+
+  t.ExecuteTemplate(w, "chat", nil)
+}
+
 func create_session(email string, w *http.ResponseWriter) {
   sessionId := inMemorySession.Init(email)
 
