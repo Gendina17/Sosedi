@@ -1,5 +1,5 @@
-{{ define "profile"}}
-{{ template "header"}}
+{{ define "my_page"}}
+{{ template "header" .Session}}
 <h1>{{ .User.Name }}</h1>
 <div class="main">
   <div class="photo_profile">

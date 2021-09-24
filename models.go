@@ -80,8 +80,6 @@ func create_user(email string, password string, name string, surname string, sex
   db := connect_db()
   defer db.Close()
 
-// email = "rr@mail.ru"
-
   res, _ := db.Query(fmt.Sprintf("INSERT INTO users (name, surname, birthday, price_min, price_max, password, sault, email, sex) VALUES ('%s','%s','%s','34000','23000','%s','%s','%s', '%s')", name, surname, birthday, encrypted_password, sault, email, sex))
   defer res.Close()
 }
@@ -127,7 +125,21 @@ func connect_db() *sql.DB {
   return db
 }
 
+func get_user_by_email(email string) User {
+  db := connect_db()
+  defer db.Close()
+
+  res, _ := db.Query(fmt.Sprintf(
+    "SELECT id, name, price_min, price_max FROM users WHERE email = \"%s\" ", email))
+
+    var user User
+    for res.Next() {
+      res.Scan(&user.Id, &user.Name, &user.PriceMin, &user.PriceMax)
+    }
+
+  return user
+}
+
 // TODO: передавать невидимым инпутом токен посмотреть как его можн шифровать
 // TODO: подумать мб как т лучше передавать эту кучу параметров
-// TODO: сделать механизм входа и создание сессии, и чтоб доступ без входа только на индекс
 // TODO: мб др писать

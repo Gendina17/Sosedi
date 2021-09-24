@@ -14,6 +14,8 @@ func handleFunc() {
 
   router.HandleFunc("/", index).Methods("GET")
   router.HandleFunc("/profile/{id:[0-9]+}", profile).Methods("GET")
+  router.HandleFunc("/my_page", my_page).Methods("GET")
+  router.HandleFunc("/favorite", favorite).Methods("GET")
   router.HandleFunc("/registration", registration).Methods("GET")
   router.HandleFunc("/authorization/", authorization).Methods("GET")
   router.HandleFunc("/log_up", log_up).Methods("POST")

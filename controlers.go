@@ -25,12 +25,18 @@ func index(w http.ResponseWriter, r *http.Request) {
   m := map[string]interface{}{
     "Users": users,
     "Session": session,
-  }
+   }
 
   t.ExecuteTemplate(w, "index", m)
 }
 
 func profile(w http.ResponseWriter, r *http.Request) {
+  session := get_session(r)
+
+  if session == "" {
+    http.Redirect(w, r, "/registration", 301)
+  }
+
   vars := mux.Vars(r)
 
   t, _ := template.ParseFiles("templates/profile.html", "templates/header.html",
@@ -39,26 +45,62 @@ func profile(w http.ResponseWriter, r *http.Request) {
 
   user := get_user(vars["id"])
 
-  t.ExecuteTemplate(w, "profile", user)
+  m := map[string]interface{}{
+    "Session": session,
+    "User": user,
+  }
+
+  t.ExecuteTemplate(w, "profile", m)
+}
+
+func my_page(w http.ResponseWriter, r *http.Request) {
+  email := get_session(r)
+
+  if email == "" {
+    http.Redirect(w, r, "/registration", 301)
+  }
+
+  t, _ := template.ParseFiles("templates/my_page.html", "templates/header.html",
+     "templates/footer.html", "templates/header_not_authorized.html",
+     "templates/header_authorized.html")
+
+  user := get_user_by_email(email)
+
+  m := map[string]interface{}{
+    "User": user,
+    "Session": email,
+  }
+
+  t.ExecuteTemplate(w, "my_page", m)
+}
+
+func favorite(w http.ResponseWriter, r *http.Request) {
+  session := get_session(r)
+
+  if session == ""{
+    // http.Redirect(w, r, "/registration", 301)
+  }
+
+  t, _ := template.ParseFiles("templates/favorite.html", "templates/header.html",
+     "templates/footer.html", "templates/header_not_authorized.html",
+     "templates/header_authorized.html", "templates/long_card.html")
+
+   m := map[string]interface{}{
+     "Session": session,
+   }
+
+  t.ExecuteTemplate(w, "favorite", m)
 }
 
 func registration(w http.ResponseWriter, r *http.Request) {
-  t, err := template.ParseFiles("templates/registration.html", "templates/header_log.html",
+  t, _ := template.ParseFiles("templates/registration.html", "templates/header_log.html",
      "templates/form1.html", "templates/form2.html", "templates/form3.html" )
-
-  if err != nil {
-    fmt.Fprintf(w, err.Error())
-  }
 
   t.ExecuteTemplate(w, "registration", nil)
 }
 
 func authorization(w http.ResponseWriter, r *http.Request) {
-  t, err := template.ParseFiles("templates/authorization.html", "templates/header_log.html")
-
-  if err != nil {
-    fmt.Fprintf(w, err.Error())
-  }
+  t, _ := template.ParseFiles("templates/authorization.html", "templates/header_log.html")
 
   t.ExecuteTemplate(w, "authorization", nil)
 }
@@ -75,7 +117,6 @@ func log_in(w http.ResponseWriter, r *http.Request) {
     t, _ := template.ParseFiles("templates/authorization.html", "templates/header_log.html")
     t.ExecuteTemplate(w, "authorization", error)
   }
-
 }
 
 func log_up(w http.ResponseWriter, r *http.Request) {
