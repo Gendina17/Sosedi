@@ -143,6 +143,14 @@ func get_user_by_email(email string) User {
 
   return user
 }
+
+func (u User) breakf(i int) bool {
+  if i == 0 {
+    return true
+  }
+  return false
+}
+
 // TODO: передавать невидимым инпутом токен посмотреть как его можн шифровать
 // TODO: подумать мб как т лучше передавать эту кучу параметров
 // TODO: мб др писать
