@@ -17,6 +17,7 @@ type User struct {
   PriceMin, PriceMax uint32
   Password, Sault, Email string
   Sex string
+  Photo string
 }
 
 func get_users() []User {
@@ -25,11 +26,14 @@ func get_users() []User {
   db := connect_db()
   defer db.Close()
 
-  res, _ := db.Query("SELECT id, name, price_min, price_max FROM users ")
+  res, _ := db.Query("SELECT id, name, price_min, price_max, photo_key FROM users ")
 
    for res.Next() {
      var user User
-     res.Scan(&user.Id, &user.Name, &user.PriceMin, &user.PriceMax)
+     res.Scan(&user.Id, &user.Name, &user.PriceMin, &user.PriceMax, &user.Photo)
+     if user.Photo == "" {
+       user.Photo = "614fa07d2e9e9f844c05567e.jpeg"
+     }
      users = append(users, user)
    }
 
@@ -73,18 +77,18 @@ func user_verification(email string, password string) bool {
   return true
 }
 
-func create_user(email string, password string, name string, surname string, sex string, birthday string)  {
+func create_user(email string, password string, name string, surname string, sex string, birthday string, photo_key string)  {
   sault := uniuri.NewLen(10)
   encrypted_password, _ := bcrypt.GenerateFromPassword([]byte(password + sault), 5)
 
   db := connect_db()
   defer db.Close()
 
-  res, _ := db.Query(fmt.Sprintf("INSERT INTO users (name, surname, birthday, price_min, price_max, password, sault, email, sex) VALUES ('%s','%s','%s','34000','23000','%s','%s','%s', '%s')", name, surname, birthday, encrypted_password, sault, email, sex))
+  res, _ := db.Query(fmt.Sprintf("INSERT INTO users (name, surname, birthday, price_min, price_max, password, sault, email, sex, photo_key) VALUES ('%s','%s','%s','34000','23000','%s','%s','%s','%s','%s')", name, surname, birthday, encrypted_password, sault, email, sex, photo_key))
   defer res.Close()
 }
 
-func data_validation(email string, password string, repeat_password string, name string, surname string, sex string, birthday string, key string) string {
+func data_validation(email string, password string, repeat_password string, name string, surname string, sex string, birthday string) string {
   matched, _ := regexp.MatchString(`^[a-z0-9][a-z0-9\._-]*[a-z0-9]*@([a-z0-9]+([a-z0-9-]*[a-z0-9]+)*\.)+[a-z]+`, email)
 
   if len(email) < 5 || len(email) > 40 || !matched {
@@ -139,7 +143,6 @@ func get_user_by_email(email string) User {
 
   return user
 }
-
 // TODO: передавать невидимым инпутом токен посмотреть как его можн шифровать
 // TODO: подумать мб как т лучше передавать эту кучу параметров
 // TODO: мб др писать

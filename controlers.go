@@ -120,6 +120,9 @@ func log_in(w http.ResponseWriter, r *http.Request) {
 }
 
 func log_up(w http.ResponseWriter, r *http.Request) {
+  t, _ := template.ParseFiles("templates/registration.html", "templates/header_log.html",
+    "templates/form1.html", "templates/form2.html", "templates/form3.html" )
+
   email := r.FormValue("mail")
   password := r.FormValue("password")
   name := r.FormValue("name")
@@ -127,17 +130,20 @@ func log_up(w http.ResponseWriter, r *http.Request) {
   repeat_password := r.FormValue("repeat_password")
   sex := r.FormValue("sex")
   birthday := r.FormValue("birthday")
-  key := r.FormValue("key")
 
-  error := data_validation(email, password, repeat_password, name, surname, sex, birthday, key)
+  photo_key, error := getting_image_from_request(r)
+
+  if error != "ok" {
+    t.ExecuteTemplate(w, "registration", error)
+  }
+
+  error = data_validation(email, password, repeat_password, name, surname, sex, birthday)
 
   if error == "ok" {
-    create_user(email, password, name, surname, sex, birthday)
+    create_user(email, password, name, surname, sex, birthday, photo_key)
     create_session(email, &w)
     http.Redirect(w, r, "/", 301)
   } else {
-    t, _ := template.ParseFiles("templates/registration.html", "templates/header_log.html",
-      "templates/form1.html", "templates/form2.html", "templates/form3.html" )
     t.ExecuteTemplate(w, "registration", error)
   }
 }
