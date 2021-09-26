@@ -50,7 +50,7 @@ ul {
   height: 250px;
   width: 300px;
   max-width: 300px;
-  border-radius: 8px;
+  border-radius: 8px 8px 0px 0px;
   transition: 1s;
   display: block;
 }
@@ -58,7 +58,7 @@ ul {
 .photo {
   display: inline-block;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 8px 8px 0px 0px;
 }
 
 .card {

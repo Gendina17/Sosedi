@@ -1,6 +1,6 @@
 {{ define "profile"}}
 {{ template "header"}}
-<h1>{{ .Name }}</h1>
+<h1>{{ .User.Name }}</h1>
 <div class="main">
   <div class="photo_profile">
     <img id="img" src="https://sun9-64.userapi.com/impg/RJYL18z_li7U_6R1hef_VMEnehYfBE1GKkvz3Q/sn3chH1oCME.jpg?size=607x1024&quality=95&sign=2aca13ec6e1d01336d289aef9ede1319&type=album" alt="">
@@ -29,11 +29,5 @@
     <img id="img_map" src="https://sun9-29.userapi.com/impg/y5npyYstu_z0JDhcN3Dn3VWh8-yLPTmbdhK2kw/4ETlZByvuSE.jpg?size=1876x1156&quality=96&sign=008fc31281482cd39a1bb6c31f31c904&type=album" id="" alt="">
   </div>
 </div>
-<style media="screen">
-  .act1 {
-    color: #fff !important;
-    border-bottom-color: #fff !important;
-  }
-</style>
 {{ template "footer"}}
 {{ end }}

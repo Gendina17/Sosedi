@@ -5,17 +5,20 @@
 </div>
 <div class="login-box ">
   <h2>SOSEDI</h2>
-  <form id="myform" action="/log_up" method="post">
+  <form id="myform" action="/log_up" method="post" enctype="multipart/form-data">
   <div id="form1">
     {{ template "form1.html"}}
   </div>
   <div id="form2" class="form2_class">
     {{ template "form2.html"}}
   </div>
+  <div id="form3" class="form3_class">
+    {{ template "form3.html"}}
+  </div>
   </form>
 </div>
 <div id="exist">
-  Уже есть аккаунт? <a href="/authorization/">Войдите!</a>
+  Уже есть аккаунт? <a href="/authorization">Войдите!</a>
 </div>
 <style media="screen">
   html {
@@ -128,7 +131,7 @@
     document.getElementById('form2').classList.remove("form2_class");
   }
 
-  function send_form() {
+  function change_forms_second() {
     //================ Проверка даты рождения ==================
     var birthday = $('input[name=birthday]');
     if(birthday.val() == '' || new Date(birthday.val()) > new Date("2005-01-01") || new Date(birthday.val()) < new Date("1940-01-01")){
@@ -149,7 +152,21 @@
       $('#errors').text('Ваш пол указан неккоректно');
       return
     }
-    document.getElementById('myform').submit(); return false;
+    document.getElementById('form2').style.display = 'none';
+    document.getElementById('form3').classList.remove("form3_class");
+  }
+
+  function send_form() {
+    var file = $('input[name=photo]');
+    if (file.val()){
+      console.log( file.val() );
+      $('#errors').text('');
+      document.getElementById('myform').submit(); return false;
+    } else {
+      $('#errors').text('Выберите, пожалуйста, свою аватарку');
+      return
+    }
+
   }
 </script>
 <style media="screen">
