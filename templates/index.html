@@ -5,11 +5,12 @@
   <div class="cards">
     {{ range $i, $user := .Users }}
       {{ template "user_card" $user }}
-      {{ if eq $i 2 }}
+
+      {{ if or (eq $i 2) (eq $i 5) }}
         </div>
         <br><br><br><br><br>
         <div class="cards">
-        {{ $i = 0 }}
+
       {{ end }}
     {{ end }}
 </main>

@@ -1,0 +1,98 @@
+{{ define "long_card"}}
+<div class="long_card">
+
+    <div class="photo_user" href="/profile/{{ .Id }}">
+      <img src="https://sun9-73.userapi.com/impg/AzeoUiylJmykxyJUYxk8DoGet2DFYrOrBmTktg/BELd4Y4ci-o.jpg?size=1068x948&quality=96&sign=be3891c295837728ecb0c8ed31c00507&type=album" alt="" class="img_user">
+    </div>
+
+    <div class="info_like">
+      <span class="name_like">Олег, </span>
+      <span class="age_like">25</span>
+      <img src="https://e7.pngegg.com/pngimages/913/63/png-clipart-sad-emoji-icon-smiley-computer-icons-emoticon-black-and-white-sad-miscellaneous-face.png" alt="Вас пока не лайкнули взаимно" width="40" height="40"><br><br>
+      <span class="price_like">5 000 - 45 000 ₽</span><br>
+      <span class="price_like">5 000 - 45 000 ₽</span><br>
+      <span class="price_like">5 000 - 45 000 ₽</span><br>
+      <span class="price_like">5 000 - 45 000 ₽</span><br>
+      <span class="likes_number_like">20 ♥</span>
+    </div>
+
+    <form class="" action="index.html" method="post">
+      <textarea maxlength="500" placeholder="Можете оставить заметки о пользователе...">
+      </textarea>
+    </form>
+
+    <p class="lead" id="dislike">
+    <img  src="../static/img/diz.png" width="40" height="40" alt="">
+<br><a href="#" class=" send btn btn-lg btn-secondary fw-bold border-black bg-white">Написать</a>
+</p>
+
+</div>
+
+<style media="screen">
+  .long_card {
+    display: flex;
+    background: #ededed;
+    width: 1010px;
+    margin-left: 400px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px 2px #332f2c;
+  }
+
+  .photo_user {
+    display: inline-block;
+    overflow: hidden;
+border-radius: 8px 0px 0px 8px;
+    border-right: 2px solid black;
+  }
+.img_user {
+  display: block;
+  height: 250px;
+  width: 300px;
+  max-width: 300px;
+border-radius: 8px 0px 0px 8px;
+  transition: 1s;
+  display: block;
+}
+.img_user:hover{
+  transform: scale(1.1);
+}
+
+.info_like > span {
+  color: black;
+}
+textarea {
+  margin-top: 15px;
+   resize: none; /* Запрещаем изменять размер */
+   text-decoration: none;
+           color: #000;
+           background: #FFC;
+           display: block;
+           height: 12em;
+           width: 20em;
+           padding: 1em;
+           -moz-box-shadow: 5px 5px 7px rgba(33, 33, 33, 1); /* для Firefox Грозного */
+           -webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, 7); /* да для люда обычного, праведного */
+           -box-shadow: 5px 5px 7px rgba(33, 33, 33, 7); /* и про Оперушку не забудем */
+  }
+
+  .info_like {
+    margin: 15px;
+  }
+
+  .name_like, .age_like {
+  font-size: 2em;
+  }
+  .price_like, .likes_number_like {
+    font-size: 1.2em;
+  }
+  #dislike {
+    text-align: right;
+  }
+  #dislike > * {
+    margin-left: 50px;
+  }
+  .send {
+    margin-top: 100px;
+  }
+</style>
+{{ end }}
