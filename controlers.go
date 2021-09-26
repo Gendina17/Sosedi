@@ -1,7 +1,6 @@
 package main
 
 import (
-  "fmt"
   "net/http"
   "time"
   "html/template"
@@ -77,8 +76,8 @@ func my_page(w http.ResponseWriter, r *http.Request) {
 func favorite(w http.ResponseWriter, r *http.Request) {
   session := get_session(r)
 
-  if session == ""{
-    // http.Redirect(w, r, "/registration", 301)
+  if session == "" {
+    http.Redirect(w, r, "/registration", 301)
   }
 
   t, _ := template.ParseFiles("templates/favorite.html", "templates/header.html",
@@ -111,7 +110,7 @@ func log_in(w http.ResponseWriter, r *http.Request) {
 
   if user_verification(email, password) {
     create_session(email, &w)
-    http.Redirect(w, r, "/", 301)
+    http.Redirect(w, r, "/my_page", 301)
   } else {
     error := "Такого пользователя не существует проверьте свой логин и пароль"
     t, _ := template.ParseFiles("templates/authorization.html", "templates/header_log.html")
@@ -148,16 +147,18 @@ func log_up(w http.ResponseWriter, r *http.Request) {
   }
 }
 
+func log_out(w http.ResponseWriter, r *http.Request) {
+  //сделать выход - очистку куки
+
+  http.Redirect(w, r, "/", 301)
+}
+
 func contacts(w http.ResponseWriter, r *http.Request) {
-  t, err := template.ParseFiles("templates/contacts.html", "templates/header.html",
+  t, _ := template.ParseFiles("templates/contacts.html", "templates/header.html",
     "templates/footer.html", "templates/header_not_authorized.html",
     "templates/header_authorized.html")
 
-  if err != nil {
-    fmt.Fprintf(w, err.Error())
-  }
-
-  t.ExecuteTemplate(w, "profile", nil)
+  t.ExecuteTemplate(w, "contacts", nil)
 }
 
 func create_session(email string, w *http.ResponseWriter) {
