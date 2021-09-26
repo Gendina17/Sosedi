@@ -3,6 +3,7 @@ package main
 import (
   "crypto/aes"
   "encoding/hex"
+  "fmt"
 )
 
 const (
