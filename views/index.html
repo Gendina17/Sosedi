@@ -1,0 +1,18 @@
+{{ define "index"}}
+<!-- {{ template "shared/header" .Session}} -->
+<main class="px-3">
+  <h1 class="title">Найди лучшего соседа</h1>
+  <div class="cards">
+    {{ range $i, $user := .Users }}
+      <!-- {{ template "cards/user_card" $user }} -->
+
+      {{ if mod $i 3 }}
+        </div>
+        <br><br><br><br><br>
+        <div class="cards">
+
+      {{ end }}
+    {{ end }}
+</main>
+<!-- {{ template "shared/footer"}} -->
+{{ end }}

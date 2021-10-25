@@ -1,0 +1,90 @@
+
+<div id="upload-container">
+<label for="file" ><img id="upload-image" src="https://habrastorage.org/webt/dr/qg/cs/drqgcsoh1mosho2swyk3kk_mtwi.png"></label>
+  <div class="file_block">
+  <input type="file" name="photo" value="" accept="image/*,image/jpeg" id="file">
+  <label for="file" id="file_label">Загрузите аватар</label>
+  </div>
+</div>
+
+  <a href="#" onclick='send_form();'>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    Зарегестрироваться
+  </a>
+
+<style media="screen">
+  #file_label {
+    font-weight: bold;
+  }
+  #file_label:hover {
+    cursor: pointer;
+       text-decoration: underline;
+  }
+  input[type=file] {
+       width: 0.1px;
+       height: 0.1px;
+       opacity: 0;
+       position: absolute;
+       z-index: -10;
+  }
+  .file_block {
+    position: relative;
+     z-index: 10;
+  }
+
+input[type=file]:focus + label {
+     outline: 1px solid #0078d7;
+     outline: -webkit-focus-ring-color auto 5px;
+}
+label.focus {
+     outline: 1px solid #0078d7;
+     outline: -webkit-focus-ring-color auto 5px;
+}
+#upload-container {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     flex-direction: column;
+     width: 250px;
+     height: 250px;
+     outline: 2px dashed #5d5d5d;
+     outline-offset: -12px;
+     background-color: rgb(16, 34, 64);
+     font-family: 'Segoe UI';
+     color: rgb(143, 163, 170);
+     margin-left: auto;
+    margin-right: auto;
+}
+
+#upload-container img {
+     width: 40%;
+     margin-bottom: 20px;
+     user-select: none;
+}
+#upload-container.dragover {
+	background-color: #fafafa;
+	outline-offset: -17px;
+}
+#exist {
+  position: absolute;
+  top: 75%;
+  left: 44%;
+  color: rgba(0,0,0,.5);
+}
+</style>
+
+<script type="text/javascript">
+
+  document.getElementById('file').addEventListener('change', function(){
+  if( this.value ){
+    document.getElementById('file_label').innerHTML = "Файл выбран";
+    document.getElementById('upload-container').style.background = "white";
+  }
+});
+
+
+
+</script>
