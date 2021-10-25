@@ -20,13 +20,12 @@ var InMemorySession *sessions.Session
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.New("").Funcs(template.FuncMap{"mod": func(i, j int) bool { return (i+1)%j == 0 }}).ParseFiles(
-		// "views/index.html",
-		// "views/shared/header.html",
-		// "views/shared/footer.html",
-		// "views/cards/user_card.html",
-		// "views/cards/header_not_authorized.html",
-		// "views/shared/header_authorized.html")
-		"views/index.html")
+		"views/index.html",
+		"views/header.html",
+		"views/footer.html",
+		"views/user_card.html",
+		"views/header_not_authorized.html",
+		"views/header_authorized.html")
 
 	users := models.Get_users()
 	session := get_session(r)
@@ -48,9 +47,9 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 
-	t, _ := template.ParseFiles("views/profile.html", "views/shared/header.html",
-		"views/shared/footer.html", "views/shared/header_not_authorized.html",
-		"views/shared/header_authorized.html")
+	t, _ := template.ParseFiles("views/profile.html", "views/header.html",
+		"views/footer.html", "views/header_not_authorized.html",
+		"views/header_authorized.html")
 
 	user := models.Get_user(vars["id"])
 
@@ -69,9 +68,9 @@ func My_page(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/registration", 301)
 	}
 
-	t, _ := template.ParseFiles("views/my_page.html", "views/shared/header.html",
-		"views/shared/footer.html", "views/shared/header_not_authorized.html",
-		"views/shared/header_authorized.html")
+	t, _ := template.ParseFiles("views/my_page.html", "views/header.html",
+		"views/footer.html", "views/header_not_authorized.html",
+		"views/header_authorized.html")
 
 	user := models.Get_user_by_email(email)
 
@@ -84,9 +83,9 @@ func My_page(w http.ResponseWriter, r *http.Request) {
 }
 
 func Contacts(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("views/contacts.html", "views/shared/header.html",
-		"views/shared/footer.html", "views/shared/header_not_authorized.html",
-		"views/shared/header_authorized.html")
+	t, _ := template.ParseFiles("views/contacts.html", "views/header.html",
+		"views/footer.html", "views/header_not_authorized.html",
+		"views/header_authorized.html")
 
 	t.ExecuteTemplate(w, "contacts", nil)
 }

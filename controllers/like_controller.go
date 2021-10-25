@@ -15,9 +15,9 @@ func Favorite(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/registration", 301)
 	}
 
-	t, _ := template.ParseFiles("views/favorite.html", "views/shared/header.html",
-		"views/shared/footer.html", "views/shared/header_not_authorized.html",
-		"views/shared/header_authorized.html", "views/cards/long_card.html")
+	t, _ := template.ParseFiles("views/favorite.html", "views/header.html",
+		"views/footer.html", "views/header_not_authorized.html",
+		"views/header_authorized.html", "views/long_card.html")
 
 	m := map[string]interface{}{
 		"Session": session,
