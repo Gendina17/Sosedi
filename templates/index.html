@@ -6,7 +6,7 @@
     {{ range $i, $user := .Users }}
       {{ template "user_card" $user }}
 
-      {{ if or (eq $i 2) (eq $i 5) }}
+      {{ if mod $i 3 }}
         </div>
         <br><br><br><br><br>
         <div class="cards">

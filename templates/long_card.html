@@ -2,17 +2,18 @@
 <div class="long_card">
 
     <div class="photo_user" href="/profile/{{ .Id }}">
-      <img src="https://sun9-73.userapi.com/impg/AzeoUiylJmykxyJUYxk8DoGet2DFYrOrBmTktg/BELd4Y4ci-o.jpg?size=1068x948&quality=96&sign=be3891c295837728ecb0c8ed31c00507&type=album" alt="" class="img_user">
+      <img src="https://sosedi-ng-rb.s3.eu-west-2.amazonaws.com/{{ .Photo }}?AWSAccessKeyId=KIASJYGCYOCKR2SATBN" alt="" class="img_user">
     </div>
 
     <div class="info_like">
-      <span class="name_like">Олег, </span>
+      <p class="user_id" hidden>{{ .Id }}</p>
+      <span class="name_like">{{ .Name }}</span>
       <span class="age_like">25</span>
       <img src="https://e7.pngegg.com/pngimages/913/63/png-clipart-sad-emoji-icon-smiley-computer-icons-emoticon-black-and-white-sad-miscellaneous-face.png" alt="Вас пока не лайкнули взаимно" width="40" height="40"><br><br>
-      <span class="price_like">5 000 - 45 000 ₽</span><br>
-      <span class="price_like">5 000 - 45 000 ₽</span><br>
-      <span class="price_like">5 000 - 45 000 ₽</span><br>
-      <span class="price_like">5 000 - 45 000 ₽</span><br>
+      <span class="price_like">{{ .PriceMin }} - {{ .PriceMax }} ₽</span><br>
+      <span class="price_like">{{ .PriceMin }} - {{ .PriceMax }} ₽</span><br>
+      <span class="price_like">{{ .PriceMin }} - {{ .PriceMax }} ₽</span><br>
+      <span class="price_like">{{ .PriceMin }} - {{ .PriceMax }} ₽</span><br>
       <span class="likes_number_like">20 ♥</span>
     </div>
 

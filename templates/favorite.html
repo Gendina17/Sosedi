@@ -6,11 +6,12 @@
   <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Все</a>
 </p>
 
-
-{{ template "long_card" }}
+{{ range $user := .Users }}
+  {{ template "long_card" $user }}
 
 <br><br><br><br>
-{{ template "long_card" }}
+<!-- {{ template "long_card" }} -->
+{{ end }}
 <style media="screen">
   .act2 {
     color: #fff !important;
