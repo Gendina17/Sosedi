@@ -26,6 +26,8 @@ func handleFunc() {
 	router.HandleFunc("/log_up", controllers.Log_up).Methods("POST")
 	router.HandleFunc("/log_in", controllers.Log_in).Methods("POST")
 	router.HandleFunc("/like", controllers.Like).Methods("POST")
+	router.HandleFunc("/comment", controllers.Comment).Methods("POST")
+	router.HandleFunc("/dislike", controllers.Dislike).Methods("POST")
 	router.HandleFunc("/check_session", controllers.Check_session).Methods("POST")
 	router.HandleFunc("/log_out", controllers.Log_out).Methods("GET")
 	router.HandleFunc("/contacts", controllers.Contacts).Methods("GET")

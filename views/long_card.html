@@ -18,12 +18,11 @@
     </div>
 
     <form class="" action="index.html" method="post">
-      <textarea maxlength="500" placeholder="Можете оставить заметки о пользователе...">
-      </textarea>
+      <textarea class="comment-area" maxlength="500" placeholder="Можете оставить заметки о пользователе...">{{ .Comment }}</textarea>
     </form>
 
     <p class="lead" id="dislike">
-    <img  src="../static/img/diz.png" width="40" height="40" alt="">
+    <img class="love-no-more" src="../static/img/diz.png" width="40" height="40" alt="">
 <br><a href="#" class=" send btn btn-lg btn-secondary fw-bold border-black bg-white">Написать</a>
 </p>
 
@@ -78,6 +77,10 @@ textarea {
 
   .info_like {
     margin: 15px;
+  }
+
+  .love-no-more:hover {
+    cursor: pointer;
   }
 
   .name_like, .age_like {

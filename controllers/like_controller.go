@@ -7,6 +7,11 @@ import (
 	"net/http"
 )
 
+type NewComment struct {
+	Comment       string
+	Liked_user_id uint16
+}
+
 func Favorite(w http.ResponseWriter, r *http.Request) {
 	session := get_session(r)
 	liked_users := models.Get_liked_users(models.Get_user_by_email(session).Id)
@@ -40,8 +45,8 @@ func Like(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Write(js)
 	} else {
-		cucurrent_user_id := models.Get_user_by_email(get_session(r)).Id
-		models.Add_to_liked(cucurrent_user_id, liked_user_id)
+		current_user_id := models.Get_user_by_email(get_session(r)).Id
+		models.Add_to_liked(current_user_id, liked_user_id)
 		js, err := json.Marshal("OK")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -49,4 +54,36 @@ func Like(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Write(js)
 	}
+}
+
+//	вызывается метод ад_коммент из модели с параметрами, переданными в пост запросе
+func Comment(w http.ResponseWriter, r *http.Request) {
+	var new_comment NewComment
+	var js []byte
+	err := json.NewDecoder(r.Body).Decode(&new_comment)
+	if err != nil {
+		println("An error occured")
+		js, _ = json.Marshal("Error")
+	} else {
+		current_user_id := models.Get_user_by_email(get_session(r)).Id
+		models.Add_comment(new_comment.Comment, new_comment.Liked_user_id, current_user_id)
+		js, _ = json.Marshal("OK")
+	}
+	w.Write(js)
+}
+
+//	то же самое что и выше только вызывает метод римув_фром_лайкд
+func Dislike(w http.ResponseWriter, r *http.Request) {
+	var liked_user_id uint16
+	var js []byte
+	err := json.NewDecoder(r.Body).Decode(&liked_user_id)
+	if err != nil {
+		println("An error occured")
+		js, _ = json.Marshal("Error")
+	} else {
+		current_user_id := models.Get_user_by_email(get_session(r)).Id
+		models.Remove_from_liked(liked_user_id, current_user_id)
+		js, _ = json.Marshal("OK")
+	}
+	w.Write(js)
 }
